@@ -5,47 +5,11 @@
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
   <body style="margin : 0px; overflow: hidden;">
     <a-scene embedded arjs>
-      <a-marker preset="hiro" id="marker">
+      <a-marker preset="hiro">
         <!-- Video asset -->
-        <a-video id="video" src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" autoplay loop="true" scale="0 0 0"></a-video>
+        <a-video src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" autoplay loop="true" scale="2 2 2" rotation="90 90 0"></a-video>
       </a-marker>
       <a-entity camera></a-entity>
-
-      <a-entity id="videoController" visible="false">
-        <a-plane id="playButton" color="green" width="2" height="1" position="-1 0.5 -4"></a-plane>
-        <a-text value="Play" color="white" align="center" position="-1 0.5 -3.9"></a-text>
-      </a-entity>
     </a-scene>
-
-    <script>
-      AFRAME.registerComponent('marker-scaler', {
-        init: function () {
-          var marker = document.getElementById('marker');
-          var video = document.getElementById('video');
-
-          this.el.sceneEl.addEventListener('arjs-marker-detected', function (event) {
-            var detectedMarker = event.target.object3D;
-            var markerWidth = detectedMarker.userData.markerRoot.parameters.width;
-            var markerHeight = detectedMarker.userData.markerRoot.parameters.height;
-
-            var videoScaleX = markerWidth / 2;
-            var videoScaleY = markerHeight / 2;
-
-            video.setAttribute('scale', `${videoScaleX} ${videoScaleY} ${videoScaleX}`);
-          });
-        }
-      });
-
-      AFRAME.registerComponent('show-video-controller', {
-        init: function () {
-          var marker = document.getElementById('marker');
-          var videoController = document.getElementById('videoController');
-
-          marker.addEventListener('click', function () {
-            videoController.setAttribute('visible', true);
-          });
-        }
-      });
-    </script>
   </body>
 </html>
