@@ -1,76 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebXR Video on Click with Plane Detection</title>
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+<title>AR.js A-Frame Location-based</title>
+<script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+<script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
+<script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
 </head>
 <body>
-  <a-scene device-orientation-permission-ui="enabled: false" arjs="sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
-    <!-- AR.js script -->
-    <script src="https://cdn.jsdelivr.net/npm/ar.js"></script>
-    
-    <!-- Video asset -->
-    <video id="video" src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" autoplay loop crossorigin="anonymous"></video>
-
-    <!-- Camera entity -->
-    <a-entity camera></a-entity>
-
-    <!-- Click event listener to place video -->
-    <a-plane id="clickPlane" visible="false" position="0 0 -5" rotation="-90 0 0" width="10" height="10" color="transparent"></a-plane>
-
-    <!-- Plane detection visualization -->
-    <a-plane id="planeVisualization" visible="false" position="0 0 -5" rotation="-90 0 0" width="1" height="1" color="red" opacity="0.5"></a-plane>
-  </a-scene>
-
-  <script>
-    AFRAME.registerComponent('click-listener', {
-      init: function () {
-        var video = document.getElementById('video');
-        var clickPlane = document.getElementById('clickPlane');
-        var planeVisualization = document.getElementById('planeVisualization');
-
-        this.el.addEventListener('click', function (event) {
-          // Check if intersection exists
-          if (event.detail.intersection) {
-            // Get intersection point in AR scene
-            var intersection = event.detail.intersection.point;
-
-            // Place the video at the intersection point
-            video.setAttribute('position', intersection);
-
-            // Make the click plane visible to provide a visual indication of where the video is placed
-            clickPlane.setAttribute('visible', true);
-            clickPlane.setAttribute('position', intersection);
-
-            // Hide the plane visualization
-            planeVisualization.setAttribute('visible', false);
-          }
-        });
-      }
-    });
-
-    AFRAME.registerComponent('plane-visualizer', {
-      init: function () {
-        var planeVisualization = document.getElementById('planeVisualization');
-
-        // Listen for the plane detected event
-        this.el.sceneEl.addEventListener('arjs-plane-detected', function (event) {
-          var plane = event.detail.plane;
-
-          // Update the plane visualization position and dimensions
-          planeVisualization.setAttribute('position', plane.model.matrixWorld.elements.slice(12, 15).join(' '));
-          planeVisualization.setAttribute('rotation', '-90 0 0');
-          planeVisualization.setAttribute('width', plane.parameters.width);
-          planeVisualization.setAttribute('height', plane.parameters.height);
-          planeVisualization.setAttribute('visible', true);
-        });
-      }
-    });
-  </script>
-
-  <!-- Register the click-listener and plane-visualizer components on the scene -->
-  <a-scene click-listener plane-visualizer></a-scene>
+<a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
+    <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
+    <a-entity material='color: red' geometry='primitive: box' gps-new-entity-place="latitude: <your-lat>; longitude: <your-loon>" scale="10 10 10"></a-entity>
+</a-scene>
 </body>
 </html>
