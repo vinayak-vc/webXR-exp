@@ -10,13 +10,13 @@
 <body>
   <a-scene embedded arjs='sourceType: webcam;'>
     <!-- QR Code marker -->
-    <a-marker type="barcode" value="YOUR_QR_CODE_VALUE">
+    <a-marker type="barcode" value="https://github.com/vinayak-vc/webXR-exp/blob/main/Untitled%201.png">
       <!-- Video element -->
       <a-video src="#video" width="16" height="9" position="0 0 -5"></a-video>
     </a-marker>
     
     <!-- Video asset -->
-    <video id="video" src="path/to/your/video.mp4" autoplay loop></video>
+    <video id="video" src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" autoplay loop></video>
 
     <!-- Camera entity -->
     <a-entity camera></a-entity>
