@@ -5,18 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebXR Video on QR Code Scan</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@0.4.0/dist/jsQR.min.js"></script>
 </head>
 <body>
-  <a-scene embedded arjs='sourceType: webcam;'>
+  <a-scene device-orientation-permission-ui="enabled: false">
+    <!-- AR.js script -->
+    <script src="https://cdn.jsdelivr.net/npm/ar.js"></script>
+    
     <!-- QR Code marker -->
-    <a-marker type="barcode" value="https://github.com/vinayak-vc/webXR-exp/blob/main/Untitled%201.png">
+    <a-marker type="barcode" value="https://vinayak-vc.github.io/webXR-exp/Untitled%201.png">
       <!-- Video element -->
       <a-video src="#video" width="16" height="9" position="0 0 -5"></a-video>
     </a-marker>
     
     <!-- Video asset -->
-    <video id="video" src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" autoplay loop></video>
+    <video id="video" src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" autoplay loop crossorigin="anonymous"></video>
 
     <!-- Camera entity -->
     <a-entity camera></a-entity>
