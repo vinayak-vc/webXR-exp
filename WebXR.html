@@ -28,15 +28,18 @@
         var clickPlane = document.getElementById('clickPlane');
 
         this.el.addEventListener('click', function (event) {
-          // Get intersection point in AR scene
-          var intersection = event.detail.intersection.point;
+          // Check if intersection exists
+          if (event.detail.intersection) {
+            // Get intersection point in AR scene
+            var intersection = event.detail.intersection.point;
 
-          // Place the video at the intersection point
-          video.setAttribute('position', intersection);
+            // Place the video at the intersection point
+            video.setAttribute('position', intersection);
 
-          // Make the click plane visible to provide a visual indication of where the video is placed
-          clickPlane.setAttribute('visible', true);
-          clickPlane.setAttribute('position', intersection);
+            // Make the click plane visible to provide a visual indication of where the video is placed
+            clickPlane.setAttribute('visible', true);
+            clickPlane.setAttribute('position', intersection);
+          }
         });
       }
     });
