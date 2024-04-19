@@ -1,4 +1,4 @@
-const cacheName = "ViitorCloud-Container Visualization-1.0";
+const cacheName = "ViitorCloud-Container Visualization-15.0";
 const contentToCache = [
     "Build/v15.loader.js",
     "Build/v15.framework.js",
