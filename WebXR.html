@@ -1,15 +1,75 @@
 <!DOCTYPE html>
 <html>
+<head>
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-  <!-- we import arjs version without NFT but with marker + location based support -->
+  <!-- Import AR.js version without NFT but with marker + location based support -->
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-  <body style="margin : 0px; overflow: hidden;">
-    <a-scene embedded arjs>
-      <a-marker preset="hiro">
-        <!-- Video asset -->
-        <a-video src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" autoplay loop="true" scale="2 2 2" rotation="90 90 0"></a-video>
-      </a-marker>
-      <a-entity camera></a-entity>
-    </a-scene>
-  </body>
+  <style>
+    body {
+      margin: 0px;
+      overflow: hidden;
+    }
+    #startButton {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 16px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <!-- Start Button -->
+  <button id="startButton">Start Experience</button>
+
+  <a-scene embedded arjs>
+    <!-- Define 10 markers with corresponding videos -->
+    <a-marker type="pattern" url="Markers/1.patt" id="marker1">
+      <a-video id="video1" src="https://www.w3schools.com/html/mov_bbb.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
+    </a-marker>
+    <a-marker type="pattern" url="Markers/2.patt" id="marker2">
+      <a-video id="video2" src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
+    </a-marker>
+    <!-- Add more markers as needed -->
+    <a-marker type="pattern" url="Markers/3.patt" id="marker3">
+      <a-video id="video3" src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
+    </a-marker>
+    <a-marker type="pattern" url="Markers/4.patt" id="marker4">
+      <a-video id="video4" src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_30mb.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
+    </a-marker>
+    <a-marker type="pattern" url="Markers/5.patt" id="marker5">
+      <a-video id="video5" src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_640_3MG.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
+    </a-marker>
+    <a-marker type="pattern" url="Markers/6.patt" id="marker6">
+      <a-video id="video6" src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_1920_18MG.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
+    </a-marker>
+    <a-marker type="pattern" url="Markers/7.patt" id="marker7">
+      <a-video id="video7" src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_1280_10MG.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
+    </a-marker>
+    <a-marker type="pattern" url="Markers/8.patt" id="marker8">
+      <a-video id="video8" src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
+    </a-marker>
+    <a-marker type="pattern" url="Markers/9.patt" id="marker9">
+      <a-video id="video9" src="https://sample-videos.com/video123/mp4/480/asdasdas.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
+    </a-marker>
+    <a-marker type="pattern" url="Markers/10.patt" id="marker10">
+      <a-video id="video10" src="https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
+    </a-marker>
+
+    <a-entity camera></a-entity>
+  </a-scene>
+
+  <script>
+    document.getElementById('startButton').addEventListener('click', function() {
+      const videos = document.querySelectorAll('a-video');
+      videos.forEach(video => {
+        video.setAttribute('autoplay', 'true');
+        video.components.sound.playSound();
+      });
+      this.style.display = 'none'; // Hide the button after starting the experience
+    });
+  </script>
+</body>
 </html>
