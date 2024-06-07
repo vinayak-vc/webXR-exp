@@ -24,7 +24,7 @@
   <!-- Start Button -->
   <button id="startButton">Start Experience</button>
 
-  <a-scene embedded arjs>
+  <a-scene embedded arjs='sourceType: webcam;'>
     <!-- Define 10 markers with corresponding videos -->
     <a-marker type="pattern" url="Markers/1.patt" id="marker1">
       <a-video id="video1" src="video/1.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
@@ -32,6 +32,7 @@
     <a-marker type="pattern" url="Markers/2.patt" id="marker2">
       <a-video id="video2" src="video/2.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
     </a-marker>
+    <!-- Add more markers as needed -->
     <a-marker type="pattern" url="Markers/3.patt" id="marker3">
       <a-video id="video3" src="video/3.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
     </a-marker>
@@ -62,6 +63,18 @@
 
   <script>
     document.getElementById('startButton').addEventListener('click', function() {
+      // Get user media with maximum resolution
+      navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 4096 }, height: { ideal: 2160 } } })
+        .then(function(stream) {
+          const videoElement = document.querySelector('video');
+          if (videoElement) {
+            videoElement.srcObject = stream;
+          }
+        })
+        .catch(function(err) {
+          console.log("The following error occurred: " + err.name);
+        });
+
       const videos = document.querySelectorAll('a-video');
       videos.forEach(video => {
         video.setAttribute('autoplay', 'true');
