@@ -32,7 +32,6 @@
     <a-marker type="pattern" url="Markers/2.patt" id="marker2">
       <a-video id="video2" src="video/2.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
     </a-marker>
-    <!-- Add more markers as needed -->
     <a-marker type="pattern" url="Markers/3.patt" id="marker3">
       <a-video id="video3" src="video/3.mp4" scale="2 2 2" rotation="90 90 0"></a-video>
     </a-marker>
@@ -66,7 +65,7 @@
       const videos = document.querySelectorAll('a-video');
       videos.forEach(video => {
         video.setAttribute('autoplay', 'true');
-        video.components.sound.playSound();
+        video.setAttribute('sound', 'src: url(' + video.getAttribute('src') + '); autoplay: true');
       });
       this.style.display = 'none'; // Hide the button after starting the experience
     });
