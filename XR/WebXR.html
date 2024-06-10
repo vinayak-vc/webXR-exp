@@ -61,38 +61,6 @@
     <a-entity camera></a-entity>
   </a-scene>
 
-  <script>
-    document.getElementById('startButton').addEventListener('click', function() {
-      // Get user media with maximum resolution
-      navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 4096 }, height: { ideal: 2160 } } })
-        .then(function(stream) {
-          const videoElement = document.querySelector('video');
-          if (videoElement) {
-            videoElement.srcObject = stream;
-          }
-        })
-        .catch(function(err) {
-          console.log("The following error occurred: " + err.name);
-        });
-
-      const videos = document.querySelectorAll('a-video');
-      videos.forEach(video => {
-        video.setAttribute('autoplay', 'true');
-        video.setAttribute('sound', 'src: url(' + video.getAttribute('src') + '); autoplay: true');
-      });
-      this.style.display = 'none'; // Hide the button after starting the experience
-    });
-
-    // Listen for marker found event
-    const markers = document.querySelectorAll('a-marker');
-    markers.forEach(marker => {
-      marker.addEventListener('markerFound', function() {
-        const video = this.querySelector('a-video');
-        if (video) {
-          console.log('Marker found. Video URL:', video.getAttribute('src'));
-        }
-      });
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
