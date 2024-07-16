@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funny Time Calculator</title>
+    <title>Exit Time Calculator</title>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -38,15 +38,7 @@
             font-family: 'Comic Neue', cursive;
         }
         button {
-            background-color: yellow;
-            border: 2px solid white;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            font-size: 2rem;
-        }
-        button:hover {
-            transform: scale(1.1);
+            display: none; /* Hide the button */
         }
         #current-time, #remaining-time, #exit-time {
             font-size: 3rem;
@@ -80,25 +72,21 @@
     </style>
 </head>
 <body>
-    <h1 class="text-panel">Funny Time Calculator</h1>
+    <h1 class="text-panel">Exit Time Calculator</h1>
 
     <div class="container">
         <label for="main-time" class="text-panel">Main Time (HH:MM):</label>
-        <input type="time" id="main-time" value="00:00">
+        <input type="time" id="main-time" value="00:00" onchange="calculateTime()">
     </div>
 
     <div class="container">
         <label for="tea-break" class="text-panel">Tea Break (minutes):</label>
-        <input type="number" id="tea-break" min="0" max="120" value="20">
+        <input type="number" id="tea-break" min="0" max="120" value="20" onchange="calculateTime()">
     </div>
 
     <div class="container">
         <label for="lunch-break" class="text-panel">Lunch Break (minutes):</label>
-        <input type="number" id="lunch-break" min="0" max="120" value="30">
-    </div>
-
-    <div class="container">
-        <button onclick="calculateTime()">Calculate Time</button>
+        <input type="number" id="lunch-break" min="0" max="120" value="30" onchange="calculateTime()">
     </div>
 
     <div class="container">
@@ -151,34 +139,27 @@
                 return;
             }
 
-            // Remove the bomb display toggle
-            // document.getElementById('bomb').style.display = 'block';
+            const [hours, minutes] = mainTime.split(':').map(Number);
+            const mainMinutes = hours * 60 + minutes;
 
-            setTimeout(() => {
-                const [hours, minutes] = mainTime.split(':').map(Number);
-                const mainMinutes = hours * 60 + minutes;
+            const totalMinutes = 8 * 60;
+            const totalBreakMinutes = teaBreak + lunchBreak;
+            const remainingMinutes = (totalMinutes + totalBreakMinutes) - mainMinutes;
 
-                const totalMinutes = 8 * 60;
-                const totalBreakMinutes = teaBreak + lunchBreak;
-                const remainingMinutes = (totalMinutes + totalBreakMinutes) - mainMinutes;
+            const remainingHours = Math.floor(remainingMinutes / 60);
+            const remainingMinutesMod = remainingMinutes % 60;
 
-                const remainingHours = Math.floor(remainingMinutes / 60);
-                const remainingMinutesMod = remainingMinutes % 60;
+            document.getElementById('current-time').innerText = new Date().toLocaleTimeString();
+            document.getElementById('remaining-time').innerText = `${remainingHours} hours and ${remainingMinutesMod} minutes`;
 
-                document.getElementById('current-time').innerText = new Date().toLocaleTimeString();
-                document.getElementById('remaining-time').innerText = `${remainingHours} hours and ${remainingMinutesMod} minutes`;
-
-                const currentDate = new Date();
-                const exitDate = new Date(currentDate.getTime() + remainingMinutes * 60 * 1000);
-                document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString();
-
-                // Remove bomb display toggle
-                // document.getElementById('bomb').style.display = 'none';
-            }, 3000); // Adjust time to match the length of your animation
+            const currentDate = new Date();
+            const exitDate = new Date(currentDate.getTime() + remainingMinutes * 60 * 1000);
+            document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString();
         }
 
-        // Set current time initially
+        // Set current time initially and start calculating time every second
         document.getElementById('current-time').innerText = new Date().toLocaleTimeString();
+        setInterval(calculateTime, 1000); // Update every second
     </script>
 </body>
 </html>
