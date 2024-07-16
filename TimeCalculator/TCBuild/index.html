@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,56 +22,70 @@
             position: relative;
             overflow: hidden;
         }
+        
         .container {
             margin-bottom: 20px;
             text-align: center;
             z-index: 1;
             position: relative;
         }
+        
         .text-panel {
             background-color: rgba(255, 255, 255, 0.7);
             padding: 10px;
             border-radius: 10px;
             display: inline-block;
         }
-        input, button {
+        
+        input,
+        button {
             font-size: 1.5rem;
             font-family: 'Comic Neue', cursive;
         }
+        
         button {
-            display: none; /* Hide the button */
+            display: none;
+            /* Hide the button */
         }
-        #current-time, #remaining-time, #exit-time {
+        
+        #current-time,
+        #remaining-time,
+        #exit-time {
             font-size: 3rem;
             margin-top: 20px;
             font-weight: bold;
             color: yellow;
             text-shadow: 2px 2px red;
         }
+        
         .big-text {
             font-size: 4rem;
             font-weight: bold;
             color: yellow;
             text-shadow: 2px 2px red;
         }
+        
         h1 {
             font-size: 5rem;
             color: yellow;
             text-shadow: 2px 2px red;
             margin-bottom: 20px;
         }
+        
         label {
             font-size: 2.5rem;
             color: yellow;
             text-shadow: 1px 1px red;
         }
+        
         .funny-gif {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            max-height: 100px;
+            width: auto;
         }
     </style>
 </head>
+
 <body>
     <h1 class="text-panel">Exit Time Calculator</h1>
 
@@ -100,24 +115,42 @@
     <script>
         const gifs = [
             "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
-            "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
+            "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3M1cHJ3YTJ0NmV6cmF6eHZpdHM3dmpzMW13bm5tcjEyMnJwcnJwYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/R6gvnAxj2ISzJdbA63/giphy.webp",
+            "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3NuMjNieGx2eWVzem94OHh0b2U3Y2VkZXJhdTQxeW5rczZwZGZkciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/duNowzaVje6Di3hnOu/giphy.webp",
+            "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExN244YzllMmg1cXJ6dTB5aHZ2ZWRjZjNudDVqYWtjbXhydmh0cGtoZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xlGYf1RUbYYes/200.webp",
+            "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjdjY3prd3prb2RtNjFmZWwzcGNpem45ZHJwcGpzcmgwaHNyc29mYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IrQcyTog3X8VW/200.webp",
+            "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGFpNGFidTk4YjV1dHhzdmd1MXN2NDJjem5lNnFtODZ6bm1iM29xMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bbshzgyFQDqPHXBo4c/giphy.webp",
+            "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjhhZ3MxZG9rdXZ0NWt5aWs0MTdjNTFxdDdnMm0zZnpmaHF5N3lociZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/UO5elnTqo4vSg/giphy.webp",
+            "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExemJ2c214OWFwcjN5ZnZsZXhhMjB5YXZ5cW83aHYzcDdrdDc5N2gyeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vVzH2XY3Y0Ar6/giphy.webp",
+            "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExODAwYjBzemd1b2NtdHM5ZmN5d3JjOGZ1eGh1MjN4aGdtN3JsZ3h0MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hryis7A55UXZNCUTNA/giphy.webp",
+            "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWlja2dwZms5cGZpZmticW8zYThuYWQ2bXRmOTIxZTgyMzB1cGJtciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yeXb4sjQLw5QA/giphy.webp",
+            "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTlkYnczaGRwMnJhdXluYnBjZWxjc3JldTl1OTl4MHZlbWUwd2YzYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vtm4qejJIl1ERPIrbA/giphy.webp",
+            "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDF3dnRjM3FuNXllODV4N3Fzc2FrcDdveTJ2ank2aDM0NTY5MG96cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hU0FIbvLLbKlfnimHu/giphy.webp",
+            "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3BkOW9lcHViN3RtcmV6YjltMzdveTAyZWhqNGJsbXlibTN5NzFjYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HIqV5khg6gyqc/200.webp",
+            "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGVkZ3gyNWw0Y3VhamJ1NmJ6ZTQzOXE5NHJzbjFrZ2J4eDhtZ3JrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ffynNaSYx2yTC/giphy.webp",
+            "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDh1aHptd3M1eHdmcXJjNnQ0eDczNDRhNnR2eTM4ZHNtN2w0N3g3cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IpKxfPy33hMRy/200.webp",
+            "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExamsyaGNvcmM4cnVzazkweDVjd3hpOWY3bGp0MjJwejFuNnFldm4wcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnUywhEhFhQUfZu666/giphy.webp",
+            "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ202NjR1MjIzOTd0MGd2bGpiZjhuOGJreWc3Y2R1MWdkODkxaGRoMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0NwF1dnk7GRz3pK0/giphy.webp",
             "https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif",
             "https://media.giphy.com/media/3oEjI5VtIhHvK37WYo/giphy.gif",
             "https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif"
         ];
 
-        function getRandomItem(arr) {
-            return arr[Math.floor(Math.random() * arr.length)];
+        function getRandomItem(index) {
+            return gifs[index];
         }
 
         function getRandomPosition() {
             const x = Math.floor(Math.random() * (window.innerWidth - 100));
             const y = Math.floor(Math.random() * (window.innerHeight - 100));
-            return { x, y };
+            return {
+                x,
+                y
+            };
         }
 
-        function addRandomGif() {
-            const gifUrl = getRandomItem(gifs);
+        function addRandomGif(index) {
+            const gifUrl = getRandomItem(index);
             const position = getRandomPosition();
             const img = document.createElement('img');
             img.src = gifUrl;
@@ -127,8 +160,8 @@
             document.body.appendChild(img);
         }
 
-        for (let i = 0; i < 4; i++) {
-            addRandomGif();
+        for (let i = 0; i < gifs.length; i++) {
+            addRandomGif(i);
         }
 
         function saveData() {
@@ -137,9 +170,9 @@
             const teaBreak = document.getElementById('tea-break').value;
             const lunchBreak = document.getElementById('lunch-break').value;
 
-            while(mainMinutes >= 60){
-                mainHours+=1;
-                mainMinutes-=60;
+            while (mainMinutes >= 60) {
+                mainHours += 1;
+                mainMinutes -= 60;
             }
 
             localStorage.setItem('mainHours', mainHours);
@@ -147,7 +180,7 @@
             localStorage.setItem('teaBreak', teaBreak);
             localStorage.setItem('lunchBreak', lunchBreak);
 
-            var currentdate = new Date(); 
+            var currentdate = new Date();
 
             localStorage.setItem('currentHour', currentdate.getHours());
             localStorage.setItem('currentMinutes', currentdate.getMinutes());
@@ -158,8 +191,8 @@
             let date = new Date();
 
             date.setHours(date.getHours() - parseInt(localStorage.getItem('currentHour') || date.getHours())); // Set hour (in 24-hour format)
-            date.setMinutes(date.getMinutes() - parseInt( localStorage.getItem('currentMinutes') || date.getMinutes())); // Set minutes
-            
+            date.setMinutes(date.getMinutes() - parseInt(localStorage.getItem('currentMinutes') || date.getMinutes())); // Set minutes
+
             console.log(date.getHours()); // Output: e.g., Wed Jul 17 2024 10:30:00 GMT+0300 (Eastern European Summer Time)
             console.log(date.getMinutes()); // Output: e.g., Wed Jul 17 2024 10:30:00 GMT+0300 (Eastern European Summer Time)
 
@@ -167,7 +200,7 @@
             console.log(localStorage.getItem('mainHours') || '0'); // Output: e.g., Wed Jul 17 2024 10:30:00 GMT+0300 (Eastern European Summer Time)
             console.log(localStorage.getItem('mainMinutes') || '0'); // Output: e.g., Wed Jul 17 2024 10:30:00 GMT+0300 (Eastern European Summer Time)
 
-                
+
             const mainHours = parseInt(localStorage.getItem('mainHours') || '0') + date.getHours();
             const mainMinutes = parseInt(localStorage.getItem('mainMinutes') || '0') + date.getMinutes();
             const teaBreak = localStorage.getItem('teaBreak') || '20';
@@ -187,7 +220,7 @@
             const minutes = parseInt(document.getElementById('main-minutes').value) || 0;
             const teaBreak = parseInt(document.getElementById('tea-break').value) || 0;
             const lunchBreak = parseInt(document.getElementById('lunch-break').value) || 0;
-          
+
             const mainMTotalinutes = hours * 60 + minutes;
 
             const totalMinutes = 8 * 60;
@@ -209,7 +242,10 @@
             } else {
                 const currentDate = new Date();
                 const exitDate = new Date(currentDate.getTime() + remainingMinutes * 60 * 1000);
-                document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
             }
 
             prevRemainingHours = remainingHours;
@@ -225,7 +261,7 @@
             } else if (Notification.permission === "granted") {
                 const notification = new Notification(message);
             } else if (Notification.permission !== "denied") {
-                Notification.requestPermission().then(function (permission) {
+                Notification.requestPermission().then(function(permission) {
                     if (permission === "granted") {
                         const notification = new Notification(message);
                     }
@@ -245,7 +281,8 @@
         window.onload = function() {
             loadData(); // Load previously saved data
             setInterval(calculateTime, 1000); // Update every second
-        }          
+        }
     </script>
 </body>
+
 </html>
