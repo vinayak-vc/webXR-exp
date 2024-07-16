@@ -1,122 +1,177 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Experiment</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-  </head>
-  <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-        </div>
-      </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Experiment</div>
-      </div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funny Time Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Comic Neue', cursive;
+            padding: 20px;
+            background: url('https://archive.org/download/untitled_20240716/Untitled.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .container {
+            margin-bottom: 20px;
+            text-align: center;
+            z-index: 1;
+        }
+        input, button {
+            font-size: 1.5rem;
+            font-family: 'Comic Neue', cursive;
+        }
+        button {
+            background-color: yellow;
+            border: 2px solid white;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        #current-time, #remaining-time, #exit-time {
+            font-size: 2rem;
+            margin-top: 20px;
+        }
+        #bomb {
+            display: none;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+        .big-text {
+            font-size: 3rem;
+        }
+        h1 {
+            font-size: 4rem;
+            color: yellow;
+            text-shadow: 2px 2px red;
+        }
+        label {
+            font-size: 2rem;
+            color: yellow;
+            text-shadow: 1px 1px red;
+        }
+        .funny-gif {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Funny Time Calculator</h1>
+
+    <div class="container">
+        <label for="main-time">Main Time (HH:MM):</label>
+        <input type="time" id="main-time" value="00:00">
     </div>
+
+    <div class="container">
+        <label for="tea-break">Tea Break (minutes):</label>
+        <input type="number" id="tea-break" min="0" max="120" value="20">
+    </div>
+
+    <div class="container">
+        <label for="lunch-break">Lunch Break (minutes):</label>
+        <input type="number" id="lunch-break" min="0" max="120" value="30">
+    </div>
+
+    <div class="container">
+        <button onclick="calculateTime()">Calculate Time</button>
+    </div>
+
+    <div class="container">
+        <img id="bomb" src="https://media.giphy.com/media/3ohhwHURFZoBCuC12U/giphy.gif" alt="Bomb explosion">
+    </div>
+
+    <div class="container">
+        <p>Current Time: <span id="current-time" class="big-text"></span></p>
+        <p>Remaining Time: <span id="remaining-time" class="big-text"></span></p>
+        <p>Exit Time: <span id="exit-time" class="big-text"></span></p>
+    </div>
+
     <script>
+        const gifs = [
+            "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
+            "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
+            "https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif",
+            "https://media.giphy.com/media/3oEjI5VtIhHvK37WYo/giphy.gif",
+            "https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif"
+        ];
 
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
-
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        function getRandomItem(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
         }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
+
+        function getRandomPosition() {
+            const x = Math.floor(Math.random() * (window.innerWidth - 100));
+            const y = Math.floor(Math.random() * (window.innerHeight - 100));
+            return { x, y };
         }
-        updateBannerVisibility();
-      }
 
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/TCBuild.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/TCBuild.data",
-        frameworkUrl: buildUrl + "/TCBuild.framework.js",
-        codeUrl: buildUrl + "/TCBuild.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "Experiment",
-        productVersion: "0.1",
-        showBanner: unityShowBanner,
-      };
+        function addRandomGif() {
+            const gifUrl = getRandomItem(gifs);
+            const position = getRandomPosition();
+            const img = document.createElement('img');
+            img.src = gifUrl;
+            img.className = 'funny-gif';
+            img.style.left = `${position.x}px`;
+            img.style.top = `${position.y}px`;
+            document.body.appendChild(img);
+        }
 
-      // By default, Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
+        for (let i = 0; i < 4; i++) {
+            addRandomGif();
+        }
 
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
+        function calculateTime() {
+            const mainTime = document.getElementById('main-time').value;
+            const teaBreak = parseInt(document.getElementById('tea-break').value) || 0;
+            const lunchBreak = parseInt(document.getElementById('lunch-break').value) || 0;
 
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        container.className = "unity-mobile";
-        canvas.className = "unity-mobile";
+            if (!mainTime) {
+                alert('Please enter a valid main time.');
+                return;
+            }
 
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
+            document.getElementById('bomb').style.display = 'block';
 
+            setTimeout(() => {
+                const [hours, minutes] = mainTime.split(':').map(Number);
+                const mainMinutes = hours * 60 + minutes;
 
-      } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+                const totalMinutes = 8 * 60;
+                const totalBreakMinutes = teaBreak + lunchBreak;
+                const remainingMinutes = (totalMinutes + totalBreakMinutes) - mainMinutes;
 
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
-      }
+                const remainingHours = Math.floor(remainingMinutes / 60);
+                const remainingMinutesMod = remainingMinutes % 60;
 
-      loadingBar.style.display = "block";
+                document.getElementById('current-time').innerText = new Date().toLocaleTimeString();
+                document.getElementById('remaining-time').innerText = `${remainingHours} hours and ${remainingMinutesMod} minutes`;
 
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                loadingBar.style.display = "none";
-                fullscreenButton.onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-              }).catch((message) => {
-                alert(message);
-              });
-            };
+                const currentDate = new Date();
+                const exitDate = new Date(currentDate.getTime() + remainingMinutes * 60 * 1000);
+                document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString();
 
-      document.body.appendChild(script);
+                document.getElementById('bomb').style.display = 'none';
+            }, 3000); // Adjust time to match the length of your animation
+        }
 
+        // Set current time initially
+        document.getElementById('current-time').innerText = new Date().toLocaleTimeString();
     </script>
-  </body>
+</body>
 </html>
