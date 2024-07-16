@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funny Time Calculator</title>
+    <title>Exit Time Calculator</title>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -28,7 +28,7 @@
             position: relative;
         }
         .text-panel {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(255, 255, 255, 0.7);
             padding: 10px;
             border-radius: 10px;
             display: inline-block;
@@ -72,21 +72,23 @@
     </style>
 </head>
 <body>
-    <h1 class="text-panel">Funny Time Calculator</h1>
+    <h1 class="text-panel">Exit Time Calculator</h1>
 
     <div class="container">
-        <label for="main-time" class="text-panel">Main Time (HH:MM):</label>
-        <input type="time" id="main-time" value="00:00" step="60" onchange="saveData()">
+        <label for="main-hours" class="text-panel">Main Time (HH:MM):</label>
+        <input type="number" id="main-hours" min="0" max="23" value="0" class="text-panel" onchange="saveData()">
+        <span class="text-panel">:</span>
+        <input type="number" id="main-minutes" min="0" max="59" value="0" class="text-panel" onchange="saveData()">
     </div>
 
     <div class="container">
         <label for="tea-break" class="text-panel">Tea Break (minutes):</label>
-        <input type="number" id="tea-break" min="0" max="120" value="20" onchange="saveData()">
+        <input type="number" id="tea-break" min="0" max="120" value="20" class="text-panel" onchange="saveData()">
     </div>
 
     <div class="container">
         <label for="lunch-break" class="text-panel">Lunch Break (minutes):</label>
-        <input type="number" id="lunch-break" min="0" max="120" value="30" onchange="saveData()">
+        <input type="number" id="lunch-break" min="0" max="120" value="30" class="text-panel" onchange="saveData()">
     </div>
 
     <div class="container">
@@ -130,41 +132,64 @@
         }
 
         function saveData() {
-            const mainTime = document.getElementById('main-time').value;
+            var mainHours = parseInt(document.getElementById('main-hours').value);
+            var mainMinutes = document.getElementById('main-minutes').value;
             const teaBreak = document.getElementById('tea-break').value;
             const lunchBreak = document.getElementById('lunch-break').value;
 
-            localStorage.setItem('mainTime', mainTime);
+            while(mainMinutes >= 60){
+                mainHours+=1;
+                mainMinutes-=60;
+            }
+
+            localStorage.setItem('mainHours', mainHours);
+            localStorage.setItem('mainMinutes', mainMinutes);
             localStorage.setItem('teaBreak', teaBreak);
             localStorage.setItem('lunchBreak', lunchBreak);
+
+            var currentdate = new Date(); 
+
+            localStorage.setItem('currentHour', currentdate.getHours());
+            localStorage.setItem('currentMinutes', currentdate.getMinutes());
         }
 
         function loadData() {
-            const mainTime = localStorage.getItem('mainTime') || '00:00';
+
+            let date = new Date();
+
+            date.setHours(date.getHours() - parseInt(localStorage.getItem('currentHour') || date.getHours())); // Set hour (in 24-hour format)
+            date.setMinutes(date.getMinutes() - parseInt( localStorage.getItem('currentMinutes') || date.getMinutes())); // Set minutes
+            
+            console.log(date.getHours()); // Output: e.g., Wed Jul 17 2024 10:30:00 GMT+0300 (Eastern European Summer Time)
+            console.log(date.getMinutes()); // Output: e.g., Wed Jul 17 2024 10:30:00 GMT+0300 (Eastern European Summer Time)
+
+
+            console.log(localStorage.getItem('mainHours') || '0'); // Output: e.g., Wed Jul 17 2024 10:30:00 GMT+0300 (Eastern European Summer Time)
+            console.log(localStorage.getItem('mainMinutes') || '0'); // Output: e.g., Wed Jul 17 2024 10:30:00 GMT+0300 (Eastern European Summer Time)
+
+                
+            const mainHours = parseInt(localStorage.getItem('mainHours') || '0') + date.getHours();
+            const mainMinutes = parseInt(localStorage.getItem('mainMinutes') || '0') + date.getMinutes();
             const teaBreak = localStorage.getItem('teaBreak') || '20';
             const lunchBreak = localStorage.getItem('lunchBreak') || '30';
 
-            document.getElementById('main-time').value = mainTime;
+            document.getElementById('main-hours').value = mainHours;
+            document.getElementById('main-minutes').value = mainMinutes;
             document.getElementById('tea-break').value = teaBreak;
             document.getElementById('lunch-break').value = lunchBreak;
         }
 
         function calculateTime() {
-            const mainTime = document.getElementById('main-time').value;
+            const hours = parseInt(document.getElementById('main-hours').value) || 0;
+            const minutes = parseInt(document.getElementById('main-minutes').value) || 0;
             const teaBreak = parseInt(document.getElementById('tea-break').value) || 0;
             const lunchBreak = parseInt(document.getElementById('lunch-break').value) || 0;
-
-            if (!mainTime) {
-                alert('Please enter a valid main time.');
-                return;
-            }
-
-            const [hours, minutes] = mainTime.split(':').map(Number);
-            const mainMinutes = hours * 60 + minutes;
+          
+            const mainMTotalinutes = hours * 60 + minutes;
 
             const totalMinutes = 8 * 60;
             const totalBreakMinutes = teaBreak + lunchBreak;
-            const remainingMinutes = (totalMinutes + totalBreakMinutes) - mainMinutes;
+            const remainingMinutes = (totalMinutes + totalBreakMinutes) - mainMTotalinutes;
 
             const remainingHours = Math.floor(remainingMinutes / 60);
             const remainingMinutesMod = remainingMinutes % 60;
@@ -175,12 +200,14 @@
             const currentDate = new Date();
             const exitDate = new Date(currentDate.getTime() + remainingMinutes * 60 * 1000);
             document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            loadData();
+            saveData();
         }
 
         // Load saved data when the page is loaded
         window.onload = function() {
             loadData(); // Load previously saved data
-            calculateTime(); // Calculate time on page load
             setInterval(calculateTime, 1000); // Update every second
         };
     </script>
