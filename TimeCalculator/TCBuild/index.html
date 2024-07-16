@@ -179,6 +179,9 @@
             document.getElementById('lunch-break').value = lunchBreak;
         }
 
+        let prevRemainingHours = 0;
+        let prevRemainingMinutes = 0;
+
         function calculateTime() {
             const hours = parseInt(document.getElementById('main-hours').value) || 0;
             const minutes = parseInt(document.getElementById('main-minutes').value) || 0;
@@ -197,19 +200,52 @@
             document.getElementById('current-time').innerText = new Date().toLocaleTimeString();
             document.getElementById('remaining-time').innerText = `${remainingHours} hours and ${remainingMinutesMod} minutes`;
 
-            const currentDate = new Date();
-            const exitDate = new Date(currentDate.getTime() + remainingMinutes * 60 * 1000);
-            document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            if (remainingHours < prevRemainingHours || (remainingHours === prevRemainingHours && remainingMinutesMod < prevRemainingMinutes)) {
+                checkHourPassed(remainingHours, remainingMinutesMod);
+            }
+
+            if (remainingHours === 0 && remainingMinutesMod === 0) {
+                document.getElementById('exit-time').innerText = "Let's Go Home!";
+            } else {
+                const currentDate = new Date();
+                const exitDate = new Date(currentDate.getTime() + remainingMinutes * 60 * 1000);
+                document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            prevRemainingHours = remainingHours;
+            prevRemainingMinutes = remainingMinutesMod;
 
             loadData();
             saveData();
+        }
+
+        function showNotification(message) {
+            if (!("Notification" in window)) {
+                alert("This browser does not support desktop notification");
+            } else if (Notification.permission === "granted") {
+                const notification = new Notification(message);
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(function (permission) {
+                    if (permission === "granted") {
+                        const notification = new Notification(message);
+                    }
+                });
+            }
+        }
+
+        function checkHourPassed(hours, minutes) {
+            if (hours > 0) {
+                showNotification(`Remaining Time: ${hours} hours and ${minutes} minutes`);
+            } else if (minutes === 0) {
+                showNotification(`30 minutes have passed.`);
+            }
         }
 
         // Load saved data when the page is loaded
         window.onload = function() {
             loadData(); // Load previously saved data
             setInterval(calculateTime, 1000); // Update every second
-        };
+        }          
     </script>
 </body>
 </html>
