@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exit Time Calculator</title>
+    <title>Funny Time Calculator</title>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -72,21 +72,21 @@
     </style>
 </head>
 <body>
-    <h1 class="text-panel">Exit Time Calculator</h1>
+    <h1 class="text-panel">Funny Time Calculator</h1>
 
     <div class="container">
         <label for="main-time" class="text-panel">Main Time (HH:MM):</label>
-        <input type="time" id="main-time" value="00:00" onchange="calculateTime()">
+        <input type="time" id="main-time" value="00:00" step="60" onchange="saveData()">
     </div>
 
     <div class="container">
         <label for="tea-break" class="text-panel">Tea Break (minutes):</label>
-        <input type="number" id="tea-break" min="0" max="120" value="20" onchange="calculateTime()">
+        <input type="number" id="tea-break" min="0" max="120" value="20" onchange="saveData()">
     </div>
 
     <div class="container">
         <label for="lunch-break" class="text-panel">Lunch Break (minutes):</label>
-        <input type="number" id="lunch-break" min="0" max="120" value="30" onchange="calculateTime()">
+        <input type="number" id="lunch-break" min="0" max="120" value="30" onchange="saveData()">
     </div>
 
     <div class="container">
@@ -129,6 +129,26 @@
             addRandomGif();
         }
 
+        function saveData() {
+            const mainTime = document.getElementById('main-time').value;
+            const teaBreak = document.getElementById('tea-break').value;
+            const lunchBreak = document.getElementById('lunch-break').value;
+
+            localStorage.setItem('mainTime', mainTime);
+            localStorage.setItem('teaBreak', teaBreak);
+            localStorage.setItem('lunchBreak', lunchBreak);
+        }
+
+        function loadData() {
+            const mainTime = localStorage.getItem('mainTime') || '00:00';
+            const teaBreak = localStorage.getItem('teaBreak') || '20';
+            const lunchBreak = localStorage.getItem('lunchBreak') || '30';
+
+            document.getElementById('main-time').value = mainTime;
+            document.getElementById('tea-break').value = teaBreak;
+            document.getElementById('lunch-break').value = lunchBreak;
+        }
+
         function calculateTime() {
             const mainTime = document.getElementById('main-time').value;
             const teaBreak = parseInt(document.getElementById('tea-break').value) || 0;
@@ -154,12 +174,15 @@
 
             const currentDate = new Date();
             const exitDate = new Date(currentDate.getTime() + remainingMinutes * 60 * 1000);
-            document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString();
+            document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
 
-        // Set current time initially and start calculating time every second
-        document.getElementById('current-time').innerText = new Date().toLocaleTimeString();
-        setInterval(calculateTime, 1000); // Update every second
+        // Load saved data when the page is loaded
+        window.onload = function() {
+            loadData(); // Load previously saved data
+            calculateTime(); // Calculate time on page load
+            setInterval(calculateTime, 1000); // Update every second
+        };
     </script>
 </body>
 </html>
