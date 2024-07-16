@@ -25,6 +25,13 @@
             margin-bottom: 20px;
             text-align: center;
             z-index: 1;
+            position: relative;
+        }
+        .text-panel {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
         }
         input, button {
             font-size: 1.5rem;
@@ -36,30 +43,32 @@
             padding: 10px 20px;
             cursor: pointer;
             transition: transform 0.2s;
+            font-size: 2rem;
         }
         button:hover {
             transform: scale(1.1);
         }
         #current-time, #remaining-time, #exit-time {
-            font-size: 2rem;
-            margin-top: 20px;
-        }
-        #bomb {
-            display: none;
-            width: 150px;
-            height: 150px;
-            margin: 0 auto;
-        }
-        .big-text {
             font-size: 3rem;
-        }
-        h1 {
-            font-size: 4rem;
+            margin-top: 20px;
+            font-weight: bold;
             color: yellow;
             text-shadow: 2px 2px red;
         }
+        .big-text {
+            font-size: 4rem;
+            font-weight: bold;
+            color: yellow;
+            text-shadow: 2px 2px red;
+        }
+        h1 {
+            font-size: 5rem;
+            color: yellow;
+            text-shadow: 2px 2px red;
+            margin-bottom: 20px;
+        }
         label {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: yellow;
             text-shadow: 1px 1px red;
         }
@@ -71,20 +80,20 @@
     </style>
 </head>
 <body>
-    <h1>Funny Time Calculator</h1>
+    <h1 class="text-panel">Funny Time Calculator</h1>
 
     <div class="container">
-        <label for="main-time">Main Time (HH:MM):</label>
+        <label for="main-time" class="text-panel">Main Time (HH:MM):</label>
         <input type="time" id="main-time" value="00:00">
     </div>
 
     <div class="container">
-        <label for="tea-break">Tea Break (minutes):</label>
+        <label for="tea-break" class="text-panel">Tea Break (minutes):</label>
         <input type="number" id="tea-break" min="0" max="120" value="20">
     </div>
 
     <div class="container">
-        <label for="lunch-break">Lunch Break (minutes):</label>
+        <label for="lunch-break" class="text-panel">Lunch Break (minutes):</label>
         <input type="number" id="lunch-break" min="0" max="120" value="30">
     </div>
 
@@ -93,13 +102,9 @@
     </div>
 
     <div class="container">
-        <img id="bomb" src="https://media.giphy.com/media/3ohhwHURFZoBCuC12U/giphy.gif" alt="Bomb explosion">
-    </div>
-
-    <div class="container">
-        <p>Current Time: <span id="current-time" class="big-text"></span></p>
-        <p>Remaining Time: <span id="remaining-time" class="big-text"></span></p>
-        <p>Exit Time: <span id="exit-time" class="big-text"></span></p>
+        <p class="text-panel">Current Time: <span id="current-time" class="big-text"></span></p>
+        <p class="text-panel">Remaining Time: <span id="remaining-time" class="big-text"></span></p>
+        <p class="text-panel">Exit Time: <span id="exit-time" class="big-text"></span></p>
     </div>
 
     <script>
@@ -146,7 +151,8 @@
                 return;
             }
 
-            document.getElementById('bomb').style.display = 'block';
+            // Remove the bomb display toggle
+            // document.getElementById('bomb').style.display = 'block';
 
             setTimeout(() => {
                 const [hours, minutes] = mainTime.split(':').map(Number);
@@ -166,7 +172,8 @@
                 const exitDate = new Date(currentDate.getTime() + remainingMinutes * 60 * 1000);
                 document.getElementById('exit-time').innerText = exitDate.toLocaleTimeString();
 
-                document.getElementById('bomb').style.display = 'none';
+                // Remove bomb display toggle
+                // document.getElementById('bomb').style.display = 'none';
             }, 3000); // Adjust time to match the length of your animation
         }
 
