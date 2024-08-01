@@ -1,3 +1,6 @@
 
 *.zip
 /node-server/node_modules
+/CuenectWebGL/node_modules
+/CuenectWebGL/certs
+CuenectWebGL/package-lock.json
