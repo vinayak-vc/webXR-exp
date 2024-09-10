@@ -1,0 +1,75 @@
+body {
+    font-family: 'Comic Neue', cursive;
+    padding: 20px;
+    background: url('https://archive.org/download/untitled_20240716/Untitled.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.container {
+    margin-bottom: 20px;
+    text-align: center;
+    z-index: 1;
+    position: relative;
+}
+
+.text-panel {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+input,
+button {
+    font-size: 1.5rem;
+    font-family: 'Comic Neue', cursive;
+}
+
+button {
+    display: none;
+}
+
+#current-time,
+#remaining-time,
+#exit-time {
+    font-size: 3rem;
+    margin-top: 20px;
+    font-weight: bold;
+    color: yellow;
+    text-shadow: 2px 2px red;
+}
+
+.big-text {
+    font-size: 4rem;
+    font-weight: bold;
+    color: yellow;
+    text-shadow: 2px 2px red;
+}
+
+h1 {
+    font-size: 5rem;
+    color: yellow;
+    text-shadow: 2px 2px red;
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 2.5rem;
+    color: yellow;
+    text-shadow: 1px 1px red;
+}
+
+.funny-gif {
+    position: absolute;
+    max-height: 150px;
+    width: auto;
+}
