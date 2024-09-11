@@ -107,19 +107,22 @@ async function fetchTrendingGIFs() {
         // Create an array of promises to fetch 10 GIFs
         for (let i = 0; i < 3; i++) {
             fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=epic+fail&rating=r`));
-            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=machester+united+goal&rating=r`));
+            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=machester+united+scores&rating=r`));
             fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=cristiano+ronaldo&rating=r`));
-            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=computer+smash&rating=r`));
-            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=batman&rating=r`));
+            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=long+shot+goals&rating=r`));
+            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=I+am+batman&rating=r`));
             fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=marvel+avengers&rating=r`));
+            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=scream&rating=r`));
+            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=leave+me+alone&rating=r`));
             fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=thug+life&rating=r`));
-            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=hit+on+head&rating=r`));
             fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=development&rating=r`));
             fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=fast+car&rating=r`));
             fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=funny+dog&rating=r`));
             fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=funny+cat&rating=r`));
             fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=machester+united&rating=r`));
             fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=harry+potter&rating=r`));
+            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=red+dead+redemption+2&rating=r`));
+            fetchPromises.push(fetchRandomGIF(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=video+games&rating=r`));
         }
 
         // Wait for all promises to resolve
@@ -180,8 +183,34 @@ function addRandomGif(index) {
     img.className = 'funny-gif';
     img.style.left = `${position.x}px`;
     img.style.top = `${position.y}px`;
+    img.addEventListener('click', handleGifClick); // Add click event to trigger fullscreen
+
     document.body.appendChild(img);
 }
+
+// Fullscreen logic
+const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+const fullscreenGif = document.getElementById('fullscreen-gif');
+
+function handleGifClick(event) {
+    const gifSrc = event.target.src;
+    fullscreenGif.src = gifSrc;
+    fullscreenOverlay.classList.add('active');
+}
+
+fullscreenOverlay.addEventListener('click', (event) => {
+    // Close fullscreen when clicking outside the GIF
+    if (event.target === fullscreenOverlay) {
+        fullscreenOverlay.classList.remove('active');
+    }
+});
+
+document.addEventListener('keydown', (event) => {
+    // Close fullscreen when pressing escape
+    if (event.key === 'Escape') {
+        fullscreenOverlay.classList.remove('active');
+    }
+});
 
 // Main function to manage GIFs
 async function manageGIFs() {

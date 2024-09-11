@@ -21,6 +21,18 @@ body {
     position: relative;
 }
 
+.containerraw {
+    margin-bottom: 20px;
+    text-align: center;
+    z-index: 1;
+    position: relative;
+    pointer-events: none;
+}
+
+.containerraw>input {
+    pointer-events: auto;
+}
+
 .text-panel {
     background-color: rgba(255, 255, 255, 0.7);
     padding: 10px;
@@ -70,6 +82,45 @@ label {
 
 .funny-gif {
     position: absolute;
-    max-height: 150px;
-    width: auto;
+    width: 100px;
+    height: 100px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+
+/* Enlarge the GIF when hovering */
+
+.funny-gif:hover {
+    transform: scale(1.5);
+    z-index: 9999;
+}
+
+
+/* Fullscreen modal */
+
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+}
+
+.fullscreen-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.fullscreen-gif {
+    max-width: 90%;
+    max-height: 90%;
 }

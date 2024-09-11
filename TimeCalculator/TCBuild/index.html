@@ -12,7 +12,11 @@
 <body>
     <h1 class="text-panel">Exit Time Calculator</h1>
 
-    <div class="container">
+    <div id="fullscreen-overlay" class="fullscreen-overlay">
+        <img id="fullscreen-gif" class="fullscreen-gif" />
+    </div>
+
+    <div class="containerraw">
         <label for="main-hours" class="text-panel">Main Time (HH:MM):</label>
         <input type="number" id="main-hours" min="0" max="23" value="0" class="text-panel" onchange="saveData()">
         <span class="text-panel">:</span>
@@ -29,7 +33,7 @@
         <input type="number" id="lunch-break" min="0" max="120" value="30" class="text-panel" onchange="saveData()">
     </div>
 
-    <div class="container">
+    <div class="containerraw">
         <p class="text-panel">Current Time: <span id="current-time" class="big-text"></span></p>
         <p class="text-panel">Remaining Time: <span id="remaining-time" class="big-text"></span></p>
         <p class="text-panel">Exit Time: <span id="exit-time" class="big-text"></span></p>
