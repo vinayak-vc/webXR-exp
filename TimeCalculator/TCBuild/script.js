@@ -22,7 +22,6 @@ let gifs = ["https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
     "https://media.giphy.com/media/3oz8xIsloV7zOmt81G/giphy.gif",
     "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHd4cTVzcG1iczExdDExbGxlZ2ZicXVwb3pwOGd1Z3J3Z2E5NDFkaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kBbLghDMVMZr4mygzc/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTI4aXpwdzR3bjJ4anE5czQ5ZmY2cXI2aXR6MHo0aWRtMHB5Nmh3cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZfK4cXKJTTay1Ava29/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGw2Mjc3ejN3OHI3YzUzMml3emJ2NW41YXMwNDFhZHdtODlqdTg1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IgpiX9Kx7dGGpFCLI1/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHRrdnJjOGFvNnkwaHppb25hcTcyNGQ4Y2pkN2o3djQ5Z3N2dGw2byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0IybQ6l8nfKjxQv6/giphy.webp", "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXN3cDN6M2hwOXVoY2g1Y3NhMDR6Yzdnb2NvdXRicTIwMnlnZXQxdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FY8c5SKwiNf1EtZKGs/giphy.webp", "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOThybzF1bG41NXZhNHNhczBpNHZiejV6ZTJrOTFwNGFiMjJhcWg3aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ok4HaWlYrewuY/giphy.webp", "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXI0d3ludzc1dmJmYWRqcW5xcmxxaTY4eWJ2ZGoxdndiZm92ZjVyeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MFsqcBSoOKPbjtmvWz/giphy.webp", "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTB5aTZoZWNweGVpdWtkZTZocDkyMjE1a3lxeG5sMnM1bjBzZzg2YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IM8WVKAtgXxAY/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGd4dzFpaXhtbHhoeTlhdDNsc3cwZ3luY2d1Zmo3MHN3OGN3dGd2YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pbgN3RZuBNfQxxPToa/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTA4bHp3d2Vhc24xdzY1bzI4aGk2ODVqeGF2MG1qY2sxdmNtejF0dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pynZagVcYxVUk/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXg4N2E2d2Fzc3g1d3I5OGtxY3FtbWl5OXNudmR1N3g3ZzBpb3JvdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gKHGnB1ml0moQdjhEJ/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExODh2NWkxd3l2eGxqdnN5cGV6enU5eGhxa2F2aTdrOXJ3b3N4NnVlZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/89G5UvynaRfER6z1gR/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2h2ZGIzenM0M3phbm81bWxmZzR3MHJ6aHRwMGI4MW1uNnRjcDl3MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/DufO3dOGMxKeyIuZYA/giphy.webp", "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnViZHN3NnJ5eGdoeDB5cG8yd3BtbWYxaHdiNjM0MGNzbDV2aW1rZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1QWCzNdgM4jaxY2wA6/giphy.webp", "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmVqY3liOTFwaTZpNTJrend5dXNvYXFkYjdtd2JlbTJ3bWcyMzZtMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/coZaN8hzdaE4lAsNMK/giphy.webp", "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmZzNmNsdWpyejh2ejA3bHN6ajVqa3N5Y2tzc2thb3ltOGVmYnp4aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Pil3nqqkM3F6TbGzvr/giphy.webp", "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMW5vajNnMDA3Y2I5N3RlYWxoaGIwanY0dGcyZXl4Mzd4MXpiY2pjdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/T4FZPjGFvTtgYIcKmU/giphy.gif", "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWV2MjdwNjB4a3k4NDF2N2xxdXRzYm1haGV3MHh2YjBrcGh5dmJjMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t344AWiQZUJSPj1SO0/giphy.webp", "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWp5bGFydW0xbnY0cHJjczI2N2c0c3R0YmFidHR3NWt6Mmdza3VoeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/oYfZ8hEsoFhKPEh6RD/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExemV2Y3E4YzU1Z3M2bW1qYmt6OWhqdTg4bXZoa2ZjMTg5bjdjNGhlcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/UvxVEnYTNA7vxx0RgX/giphy.webp", "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXFsOTVtdnc3MnByY2xsNjR2eHYydXE3MGF1NXdocXIyaWFheWJvaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/h0MTqLyvgG0Ss/giphy.webp", "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3JqdGEzem9naW1za2EzYXVmNmRodDAyYmcwMGIyaWNnNmJueGM0MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/e5EcjjJx3dCFi/giphy.webp", "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2JpYzIzOTI3Ymd1bHNjaDRycTdlZGJ0OXBkNnZmbG1pc2ZvYWdpayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ohfFv7JAWfOZZTtFC/giphy.webp", "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmYwMjRhM2lyNG03eDE3NTB6bmhsdzNoM2hjMjNoMzc5MTVtNDdvNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2Bg4jgsiWQCvC/giphy.webp", "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExam5hM2pqNGFhaW00cWl6ZmJiMGJ6N3J5c2RqamljaHpiaTk4ZW9pYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TDvptqdkn5PbAq5yNy/giphy.webp", "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExb3EyN3M5YzZlMjNpZXB5ZjJ5MnJyY2lvZW5xaDI4NWU0cDN3cWM0cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ohfFIit2bUGQzSJby/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzR4cGw1NXl4dHhpZHQyNTkyZ3lxdTU2MnNrNG96M205OHBheXpobCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUySTH0ZFqF9KeUPcI/giphy.webp", "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExanowZzgzN3lpd2JoM2JzMHFmdTZjcHFrZG1mb2w1enU4ZjV5cHd2NCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AGGcmjQuwPHvvpotns/giphy.webp", "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcnAzOHg1aWJwazlxejVhd3hsNGp3eWUyeDZ4dmRmc3lwbTJ1c2tzNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZtJw0RY6WW0ik/giphy.webp", "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnN6amR4ZWpmcjJva3AyMTBrZDdoOXk2aGYzOGxxamNwOTdjenVldCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5T0kyezV83pqrZOMPf/giphy.webp"
 ];
-gifs =[];
 const workHours = 8 * 60;
 
 const apiKey = 'zhnH71CTQrwHKV4TPgu308Y9ixklUdBy'; // Replace with your actual Giphy API key
@@ -31,6 +30,43 @@ const apiURL = `https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=epic+
 const cacheDuration = 120 * 60 * 1000; // 30 minutes in milliseconds
 const dbName = 'gifCacheDB';
 const storeName = 'gifs';
+
+function catFact() {
+
+    fetch('https://catfact.ninja/fact?max_length=1000')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('cat-fact').innerText = data.fact;
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
+    fetch('https://icanhazdadjoke.com/', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('random-fact').innerText = data.joke;
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
+}
 
 //gifs = []; // Array to store GIF URLs
 
@@ -94,6 +130,7 @@ async function fetchRandomGIF(apiURL) {
     try {
         const response = await fetch(apiURL);
         const data = await response.json();
+     
         return data.data.images.fixed_height.url;
     } catch (error) {
         console.error("Error fetching GIF:", error);
@@ -237,6 +274,7 @@ async function manageGIFs() {
 
 // Call manageGIFs to handle GIFs on page load
 manageGIFs();
+catFact();
 
 function saveData() {
     var mainHours = parseInt(document.getElementById('main-hours').value);
@@ -273,6 +311,8 @@ function loadData() {
     document.getElementById('main-minutes').value = mainMinutes;
     document.getElementById('tea-break').value = teaBreak;
     document.getElementById('lunch-break').value = lunchBreak;
+
+
 }
 
 let prevRemainingHours = 0;
