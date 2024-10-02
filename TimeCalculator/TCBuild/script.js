@@ -66,6 +66,31 @@ function catFact() {
             console.error('There was a problem with the fetch operation:', error);
         });
 
+    fetch('https://v2.jokeapi.dev/joke/Any', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.type === 'single') {
+                document.getElementById('1-fact').innerText = data.joke;
+            } else {
+                document.getElementById('1-fact').innerText = data.setup;
+                document.getElementById('2-fact').innerText = data.delivery;
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
+
 }
 
 //gifs = []; // Array to store GIF URLs
@@ -130,7 +155,7 @@ async function fetchRandomGIF(apiURL) {
     try {
         const response = await fetch(apiURL);
         const data = await response.json();
-     
+
         return data.data.images.fixed_height.url;
     } catch (error) {
         console.error("Error fetching GIF:", error);
