@@ -1,9 +1,9 @@
 const cacheName = "ViitorCloud-Mobile Touchpad-1.0.6";
 const contentToCache = [
     "Build/Mobile Touchpad-1.0.6-WebGL-Release.loader.js",
-    "Build/Mobile Touchpad-1.0.6-WebGL-Release.framework.js",
-    "Build/Mobile Touchpad-1.0.6-WebGL-Release.data",
-    "Build/Mobile Touchpad-1.0.6-WebGL-Release.wasm",
+    "Build/Mobile Touchpad-1.0.6-WebGL-Release.framework.js.br",
+    "Build/Mobile Touchpad-1.0.6-WebGL-Release.data.br",
+    "Build/Mobile Touchpad-1.0.6-WebGL-Release.wasm.br",
     "TemplateData/style.css"
 
 ];
