@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "590323444299",
+    "firebase_url": "https://adminpanelmanager-default-rtdb.firebaseio.com",
+    "project_id": "adminpanelmanager",
+    "storage_bucket": "adminpanelmanager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590323444299:android:7595f8bd6e3c59ecf2fbce",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.FirebaseRestAPIProject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhZpW8xPuOaBQcQQv0EitChWlVN3tEpxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
