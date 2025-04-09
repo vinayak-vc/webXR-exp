@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Income Tax Calculator (New Regime)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -15,7 +16,7 @@
         .calculator {
             background: white;
             padding: 30px;
-            max-width: 600px;
+            max-width: 750px;
             margin: auto;
             border-radius: 16px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -50,7 +51,7 @@
         }
         
         button {
-            margin-top: 30px;
+            margin-top: 20px;
             width: 100%;
             padding: 14px;
             background: #007bff;
@@ -76,6 +77,25 @@
         
         .results p {
             margin: 10px 0;
+        }
+        
+        .breakdown {
+            margin-top: 15px;
+            background: #fff;
+            border: 1px dashed #ccc;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        canvas {
+            margin-top: 30px;
+        }
+        
+        @media print {
+            button,
+            input {
+                display: none !important;
+            }
         }
         
         @keyframes fadeIn {
@@ -121,58 +141,155 @@
         <button onclick="calculateTax()">Calculate</button>
 
         <div class="results" id="results" style="display: none;"></div>
+
+        <button id="printBtn" onclick="window.print()" style="display: none; margin-top: 15px;">
+      🖨️ Print / Export as PDF
+    </button>
+
+        <canvas id="taxChart" style="display: none; height: 300px;"></canvas>
     </div>
 
     <script>
+        function formatCurrency(num) {
+            return `₹${Number(num).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
+        }
+
         function numberToWords(num) {
-            return new Intl.NumberFormat('en-IN', {
-                style: 'currency',
-                currency: 'INR',
-                maximumFractionDigits: 0
-            }).format(num);
+            const words = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+            const a = ['', 'Thousand', 'Lakh', 'Crore'];
+            if (num === 0) return 'Zero Rupees';
+
+            let word = '';
+            let i = 0;
+            while (num > 0) {
+                const rem = num % 1000;
+                if (rem !== 0) {
+                    word = `${convertThreeDigits(rem)} ${a[i]} ${word}`;
+                }
+                num = Math.floor(num / 1000);
+                i++;
+            }
+            return word.trim() + ' Only';
+        }
+
+        function convertThreeDigits(num) {
+            const oneToNineteen = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+                'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
+            ];
+            const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+            let str = '';
+
+            if (num > 99) {
+                str += oneToNineteen[Math.floor(num / 100)] + ' Hundred ';
+                num = num % 100;
+            }
+
+            if (num < 20) {
+                str += oneToNineteen[num];
+            } else {
+                str += tens[Math.floor(num / 10)] + ' ' + oneToNineteen[num % 10];
+            }
+
+            return str.trim();
         }
 
         function showInWords() {
             const income = parseFloat(document.getElementById('income').value);
             const display = document.getElementById('incomeInWords');
             if (!isNaN(income) && income > 0) {
-                display.textContent = `You entered: ${numberToWords(income)}`;
+                display.textContent = `You entered: ${formatCurrency(income)} (${numberToWordsIndian(income)})`;
             } else {
                 display.textContent = '';
             }
         }
 
-        function calculateTaxAll(income) {
-            const stdDeduction = 75000;
-            const taxable = Math.max(0, income - stdDeduction);
-            let tax = 0;
-            let remaining = taxable;
+        function numberToWordsIndian(num) {
+            if (num === 0) return 'Zero';
 
-            if (taxable <= 400000) return {
-                tax: 0,
-                taxable
+            const a = [
+                '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
+                'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen',
+                'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
+            ];
+            const b = [
+                '', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'
+            ];
+
+            const makeTwoDigits = (n) => {
+                if (n < 20) return a[n];
+                return b[Math.floor(n / 10)] + (n % 10 ? ' ' + a[n % 10] : '');
             };
 
-            remaining -= 400000;
-            const slabs = [0.05, 0.10, 0.15, 0.20, 0.25];
+            const getPart = (n, label) => {
+                return n ? `${numberToWordsIndian(n)} ${label} ` : '';
+            };
+
+            let crore = Math.floor(num / 10000000);
+            let lakh = Math.floor((num % 10000000) / 100000);
+            let thousand = Math.floor((num % 100000) / 1000);
+            let hundred = Math.floor((num % 1000) / 100);
+            let rest = num % 100;
+
+            let words = '';
+            words += getPart(crore, 'Crore');
+            words += getPart(lakh, 'Lakh');
+            words += getPart(thousand, 'Thousand');
+            words += getPart(hundred, 'Hundred');
+            if (rest) words += (words ? 'and ' : '') + makeTwoDigits(rest);
+
+            return words.trim();
+        }
+
+
+        function calculateSlabTax(taxableIncome) {
+            const slabs = [{
+                limit: 400000,
+                rate: 0
+            }, {
+                limit: 400000,
+                rate: 0.05
+            }, {
+                limit: 400000,
+                rate: 0.10
+            }, {
+                limit: 400000,
+                rate: 0.15
+            }, {
+                limit: 400000,
+                rate: 0.20
+            }, {
+                limit: 400000,
+                rate: 0.25
+            }, {
+                limit: Infinity,
+                rate: 0.30
+            }];
+
+            let remaining = taxableIncome;
+            let totalTax = 0;
+            const breakdown = [];
 
             for (let i = 0; i < slabs.length; i++) {
-                if (remaining > 400000) {
-                    tax += 400000 * slabs[i];
-                    remaining -= 400000;
-                } else {
-                    tax += remaining * slabs[i];
-                    return {
-                        tax,
-                        taxable
-                    };
+                const slabAmount = Math.min(remaining, slabs[i].limit);
+                const tax = slabAmount * slabs[i].rate;
+
+                if (slabAmount > 0) {
+                    breakdown.push({
+                        slab: `${formatCurrency(slabAmount)} at ${slabs[i].rate * 100}%`,
+                        tax: tax
+                    });
                 }
+
+                totalTax += tax;
+                remaining -= slabAmount;
+
+                if (remaining <= 0) break;
             }
 
-            tax += remaining * 0.30;
             return {
-                tax,
-                taxable
+                totalTax,
+                breakdown
             };
         }
 
@@ -180,24 +297,82 @@
             const income = parseFloat(document.getElementById('income').value);
             if (!income || income <= 0) return alert("Please enter a valid income.");
 
-            const result = calculateTaxAll(income);
-            const tax = result.tax;
-            const monthlyTax = tax / 12;
+            const stdDeduction = 75000;
+            const taxableIncome = Math.max(0, income - stdDeduction);
+            const {
+                totalTax,
+                breakdown
+            } = calculateSlabTax(taxableIncome);
+
+            const monthlyTax = totalTax / 12;
             const claimable = 60000;
-            const remainingTax = Math.max(0, tax - claimable);
+            const remainingTax = Math.max(0, totalTax - claimable);
 
             const resultsDiv = document.getElementById("results");
             resultsDiv.style.display = "block";
             resultsDiv.innerHTML = `
-        <p><strong>Standard Deduction:</strong> ₹75,000</p>
-        <p><strong>Taxable Income:</strong> ${numberToWords(result.taxable)}</p>
-        <p><strong>Estimated Annual Tax:</strong> ${numberToWords(tax)}</p>
-        <p><strong>Monthly Payable Tax:</strong> ${numberToWords(monthlyTax.toFixed(0))}</p>
-        <p><strong>Claimable for Salaried Employee:</strong> ₹60,000 (${numberToWords(claimable)})</p>
-        <p><strong>Non-recoverable Tax (after claim):</strong> ${numberToWords(remainingTax.toFixed(0))}</p>
-        <p><strong>Note:</strong> ₹60,000 can be claimed if you are a salaried individual. The remaining ₹${remainingTax.toFixed(0)} is payable and cannot be recovered.</p>
-      `;
+  <p><strong>Standard Deduction:</strong> 
+    <a href="https://economictimes.indiatimes.com/wealth/income-tax-slabs?utm_source=chatgpt.com&from=mdr" 
+       target="_blank" style="color: #007bff; text-decoration: underline;">
+      ${formatCurrency(stdDeduction)}
+    </a>
+  </p>
+  <p><strong>Taxable Income:</strong> ${formatCurrency(taxableIncome)} (${numberToWordsIndian(taxableIncome)}))</p>
+  <p><strong>Estimated Annual Tax:</strong> ${formatCurrency(totalTax)} (${numberToWordsIndian(totalTax)})</p>
+  <p><strong>Monthly Payable Tax:</strong> ${formatCurrency(monthlyTax.toFixed(0))} (${numberToWordsIndian(monthlyTax.toFixed(0))})</p>
+  <p><strong>Claimable for Salaried Employee:</strong> ${formatCurrency(claimable)} (${numberToWordsIndian(claimable)})</p>
+  <p><strong>Non-recoverable Tax (after claim):</strong> ${formatCurrency(remainingTax.toFixed(0))} (${numberToWordsIndian(remainingTax.toFixed(0))})</p>
+  <p><strong>Note:</strong> ₹60,000 can be claimed if you are a salaried individual. The remaining 
+    ${formatCurrency(remainingTax.toFixed(0))} (${numberToWordsIndian(remainingTax.toFixed(0))}) is payable and cannot be recovered.
+  </p>
+
+  <div class="breakdown">
+    <h4>📊 Slab-wise Tax Breakdown:</h4>
+    <ul>
+      ${breakdown.map(b => `<li>${b.slab}: <strong>${formatCurrency(b.tax)}</strong></li>`).join('')}
+    </ul>
+  </div>
+
+  <div style="margin-top: 25px; font-size: 14px; font-style: italic; color: #555;">
+    📚 <strong>Sources / References:</strong><br/>
+    <a href="https://economictimes.indiatimes.com/wealth/income-tax-slabs?utm_source=chatgpt.com&from=mdr" target="_blank">
+      Economic Times - Income Tax Slabs
+    </a><br/>
+    <a href="https://incometaxindia.gov.in/" target="_blank">
+      Income Tax India Official Portal
+    </a>
+  </div>
+`;
+
+      // Show Print button
+      document.getElementById('printBtn').style.display = 'block';
+
+      // Show Chart
+      const ctx = document.getElementById('taxChart');
+      ctx.style.display = 'block';
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: breakdown.map(b => b.slab),
+          datasets: [{
+            label: 'Tax Amount',
+            data: breakdown.map(b => b.tax),
+            backgroundColor: '#007bff'
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              ticks: {
+                callback: value => `₹${value.toLocaleString('en-IN')}`
+              }
+            }
+          }
         }
+      });
+    }
     </script>
 </body>
 
